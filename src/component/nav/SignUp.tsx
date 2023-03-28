@@ -1,7 +1,7 @@
-import axios from 'axios';
-import "./SignUp.css";
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import "./SignUp.css";
 
 function SignUp(props:any) {
   let navigate = useNavigate();
@@ -21,7 +21,7 @@ function SignUp(props:any) {
   };
   
   return (
-    <div className="container mt-5 " >
+    <div className="container mt-5 ">
       <div className="row d-flex justify-content-center">
         <div className="col-md-7">
           <div className="signIn card px-5 py-5" id="form1">
@@ -29,7 +29,7 @@ function SignUp(props:any) {
               <h2 className="Register row d-flex justify-content-center">Register</h2>
               <h5 className="row d-flex justify-content-center">Please enter details to register</h5>
               <div className="forms-inputs col-md-4 mb-3">
-                <h6>UserName</h6>
+                <h6 className="md-4 mb-3">UserName</h6>
                 <input type="text" id="validationCustom01" placeholder="Enter user name" required onChange={(e) => setUserName(e.target.value)} style={{width:"100%"}} />
               </div>
               <div className="forms-inputs col-md-4 mb-3">

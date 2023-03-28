@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import "./Navbar.css";
 
@@ -10,8 +10,9 @@ function Navbar(props: any) {
     localStorage.clear();
     navigate("/");
     window.location.reload()
-
   };
+
+
 
 
   return (
@@ -22,10 +23,10 @@ function Navbar(props: any) {
             <a className="nav-link" href="#">Dating App</a>
           </li>
           <li className="nav-item">
-            <a className="nav-link" href="#">Machtes</a>
+            <a className="nav-link" href="#">Home</a>
           </li>
           <li className="nav-item">
-            <a className="nav-link" href="#">List</a>
+            <a className="nav-link" href="#">Status</a>
           </li>
           <li className="nav-item">
             <a className="nav-link" href="#">Massages</a>

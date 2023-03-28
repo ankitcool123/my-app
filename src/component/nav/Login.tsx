@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import "./Login.css";
 import axios from 'axios';
@@ -16,13 +16,13 @@ function Login(this: any, props: any) {
 
     }, header).then((resp: any) => {
       localStorage.setItem("user-token", resp.data.token as string);
-     
+
       console.log(resp);
       props.setSignIn(true);
-      navigate("/Nav");
+      navigate("/Home");
     });
-
   };
+
 
   return (
     <div className="container mt-5 " >
@@ -34,19 +34,19 @@ function Login(this: any, props: any) {
               <h5 className="mb-4 row d-flex justify-content-center">Please login your account</h5>
               <div className="forms-inputs col-md-4 mb-3">
                 <h6>UserName</h6>
-                <input type="text" id="validationCustom01" placeholder="Enter user name" required onChange={(e) => setUserName(e.target.value)} style={{width:"100%"}} />
+                <input type="text" id="validationCustom01" placeholder="Enter user name" required onChange={(e) => setUserName(e.target.value)} style={{ width: "100%" }} />
               </div>
               <div className="forms-inputs col-md-4 mb-3">
                 <h6>Password</h6>
-                <input type="text" id="validationCustom02" placeholder="Enter your password" required onChange={(e) => setPassword(e.target.value)} style={{width:"100%"}} />
+                <input type="text" id="validationCustom02" placeholder="Enter your password" required onChange={(e) => setPassword(e.target.value)} style={{ width: "100%" }} />
               </div>
               <div className="mb-3"> <button className="btn btn-dark w-100" onClick={handleSubmit}>Login</button> </div>
               <div  >
-             <a> Don't have an account?</a>
+                <a> Don't have an account?</a>
                 <a className="Reg" onClick={() => {
-                  navigate(`/Reg`)
+                  navigate(`/Register`)
                 }}>Register</a>
-                </div>
+              </div>
             </div>
           </div>
         </div>
