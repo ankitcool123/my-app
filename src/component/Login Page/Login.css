@@ -1,0 +1,34 @@
+.signIn {
+   background-color: whitesmoke;
+   margin-top: 15%
+}
+
+.Reg {
+   color: blue;
+   cursor: pointer;
+}
+
+.log {
+   color: blue;
+}
+.Login{
+   margin-top: 50px;
+}
+.inpas{
+   border-radius: 5px;
+   background: transparent;
+   margin-left: 10px;
+}
+.img {
+   background-image: url(../Images/online-dating-vector1.png.jpg);
+    height: 100vh;
+    width: 100%;
+    display: block;
+}
+.arrow{
+   margin-top: 20px;
+   margin-left: -20px;
+   color: aliceblue;
+   size: 20px;
+   cursor: pointer;
+}

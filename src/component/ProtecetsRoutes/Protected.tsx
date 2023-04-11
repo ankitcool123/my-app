@@ -7,7 +7,7 @@ function Protected(props: any) {
     useEffect(() => {
         let auth = localStorage.getItem("user-token");
         if (!auth) {
-            navigate("/")
+            navigate("/Login")
         }
     });
 

@@ -1,0 +1,24 @@
+.Login {
+    color: blue;
+    cursor: pointer;
+}
+
+.Register {
+    color: blue;
+}
+.img {
+    background-image: url(../Images/online-dating-vector1.png.jpg);
+     height: 100vh;
+     width: 100%;
+     display: block;
+}
+.arrow{
+    margin-top: 20px;
+    margin-left: -20px;
+    color: aliceblue;
+    size: 20px;
+    cursor: pointer;
+ }
+ #validationCustom03{
+    margin-left: 40px;
+  }

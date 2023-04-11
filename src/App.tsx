@@ -1,20 +1,31 @@
 import React, { useState } from 'react';
 import './App.css';
-import Navbar from './component/nav/Navbar';
-import {BrowserRouter, Routes, Route} from "react-router-dom";
-import Login from './component/nav/Login';
-import SignUp from './component/nav/SignUp';
+import Header from './component/nav/Header';
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Protected from './component/ProtecetsRoutes/Protected';
+import Login from './component/Login Page/Login';
+import SignUp from './component/SignUp Page/SignUp';
+import Contact from './component/Pages/Contacts';
+import Chat from './component/Pages/Chat';
+import Status from './component/Pages/Status';
+import Welcome from './component/Welcome Page/Welcome';
+import EditUserProfile from './component/Profile/EditUserProfile';
+
 
 function App() {
-    const [SignIn, setSignIn]= useState(false);
-   
+  const [SignIn, setSignIn] = useState(false);
+
   return (
-   <BrowserRouter>
+    <BrowserRouter>
       <Routes>
-        <Route  path="/" element={<Login setSignIn = {setSignIn}/>}></Route> 
-         <Route  path="/Home" element={<Protected Component={Navbar} />}></Route>
-         <Route path="/Register"  element={<SignUp/>}></Route> 
+      <Route path="/" element={<Welcome />}></Route>
+        <Route path="/Login" element={<Login setSignIn={setSignIn} />}></Route>
+        <Route path="/Register" element={<SignUp />}></Route>
+        <Route path="/Dashborad" element={<Protected Component={Header} />}></Route>
+        <Route path="/Dashborad/Contact" element={<Protected Component={Contact} />}></Route>
+        <Route path="/Dashborad/Chat" element={<Protected Component={Chat} />}></Route>
+        <Route path="/Dashborad/Status" element={<Protected Component={Status} />}></Route>
+        <Route path="/Dashborad/EditUserProfile" element={<Protected Component={EditUserProfile} />}></Route>
       </Routes>
     </BrowserRouter>
   );

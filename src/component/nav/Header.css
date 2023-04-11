@@ -1,0 +1,34 @@
+.Logout{
+    margin-right: 30px;
+    cursor: pointer;
+    color: white;
+    
+ }
+ .btn{
+  color: white;
+ }
+ .header{
+  margin-left: 30px;
+ }
+ .nav1{
+  cursor: pointer;
+ }
+ .nav2{
+  cursor: pointer;
+ }
+ .nav3{
+  cursor: pointer;
+ }
+
+ /* .col-3 {
+    float: left;
+    width: 10%;
+  }
+  .col-9 {
+    float: left;
+    width: 70%;
+  } */
+  /* .row:after {
+    display: block;
+  } */
+  
