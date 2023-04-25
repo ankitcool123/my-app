@@ -4,6 +4,7 @@ import "./Contacts.css";
 import axios from 'axios';
 import { FaUserAlt } from "react-icons/fa";
 
+const baseUrl: any = process.env.REACT_APP_BASE_URL;
 
 
 function Contact(props: any) {
@@ -12,12 +13,14 @@ function Contact(props: any) {
     const [users, setUsers] = useState([]);
 
     const getUsersData = async () => {
-        await axios.get("https://localhost:5001/api/Users", {
-
-        }).then(res => {
-            const data = res.data
+        axios
+          .get(baseUrl + "Users")
+          .then(function (response) {
+            const data = response.data
             setUsers(data);
-        });
+           
+          })
+       
     };
     useEffect(() => {
         getUsersData();

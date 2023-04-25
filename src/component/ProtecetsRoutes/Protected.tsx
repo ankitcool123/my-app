@@ -1,11 +1,15 @@
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { authUserAtom } from "../../state";
+import { useSetRecoilState } from "recoil";
 
 function Protected(props: any) {
+    const setAuthUser = useSetRecoilState(authUserAtom)
+
     const { Component } = props;
     const navigate = useNavigate();
     useEffect(() => {
-        let auth = localStorage.getItem("user-token");
+        let auth = setAuthUser;
         if (!auth) {
             navigate("/Login")
         }

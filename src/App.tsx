@@ -10,6 +10,7 @@ import Chat from './component/Pages/Chat';
 import Status from './component/Pages/Status';
 import Welcome from './component/Welcome Page/Welcome';
 import EditUserProfile from './component/Profile/EditUserProfile';
+import { RecoilRoot } from 'recoil';
 
 
 function App() {
@@ -17,6 +18,7 @@ function App() {
 
   return (
     <BrowserRouter>
+    <RecoilRoot>
       <Routes>
       <Route path="/" element={<Welcome />}></Route>
         <Route path="/Login" element={<Login setSignIn={setSignIn} />}></Route>
@@ -27,6 +29,7 @@ function App() {
         <Route path="/Dashborad/Status" element={<Protected Component={Status} />}></Route>
         <Route path="/Dashborad/EditUserProfile" element={<Protected Component={EditUserProfile} />}></Route>
       </Routes>
+      </RecoilRoot>
     </BrowserRouter>
   );
 }

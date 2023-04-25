@@ -2,30 +2,31 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import "./SignUp.css";
-import {BiArrowBack} from "react-icons/bi";
+import { BiArrowBack } from "react-icons/bi";
+import { useSetRecoilState } from 'recoil';
+import { authUserAtom } from '../../state';
 
-function SignUp(props:any) {
+const baseUrl: any = process.env.REACT_APP_BASE_URL;
+
+function SignUp(props: any) {
   let navigate = useNavigate();
-    const [userName, setUserName] = useState("");
+  const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
   const [emailId, setEmailId] = useState("");
-  const [PhoneNumber, setPhoneNumber]  =useState("");
+  const [PhoneNumber, setPhoneNumber] = useState("");
 
   const header = { headers: { "Access-Control-Allow-Origin": "*" } };
   const handleSubmit = async (e: any) => {
-    e.preventDefault();
-    await axios.post("https://localhost:5001/api/Account/register", {
-      userName: userName, password: password, emailId: emailId, PhoneNumber: PhoneNumber,
-
-    }, header)
-
+    let parm = { userName: userName, password: password, emailId: emailId, PhoneNumber: PhoneNumber };
+    axios
+      .post(baseUrl + "Account/register", parm)
   };
-  
+
   return (
- <div className='row d-flex justify-content-center img' >
+    <div className='row d-flex justify-content-center img' >
       <div className="wel d-flex justify-content-center" style={{ backgroundColor: "lightpink" }} >
-      <div className='arrow' onClick={() => { navigate(`/`) }} >
-          <BiArrowBack/>
+        <div className='arrow' onClick={() => { navigate(`/`) }} >
+          <BiArrowBack />
         </div>
         <div>
           <div className='hea d-flex justify-content-center'>

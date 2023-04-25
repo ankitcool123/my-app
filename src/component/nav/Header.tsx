@@ -1,9 +1,14 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import "./Header.css";
-import jwt_decode from 'jwt-decode';
+import { useRecoilState } from 'recoil';
+import { authUserAtom } from '../../state';
+import axios from 'axios';
+import { userAtom } from '../../state/userAtom';
 
-function Header(props: any) {
+const baseUrl: any = process.env.REACT_APP_BASE_URL;
+
+function Header() {
   let navigate = useNavigate();
 
   const onOut = () => {
@@ -11,12 +16,26 @@ function Header(props: any) {
     navigate("/");
     window.location.reload()
   };
+  const [authUser]: any = useRecoilState(authUserAtom);
+  // const [users, setUsers] = useState<any>([]);
+  const [users,setUsers] = useRecoilState(userAtom);
 
-  // ------------ Token decode start ----------//
-  const token: any = localStorage.getItem("user-token");
-  const decoded: any = jwt_decode(token);
-  const username: string = decoded.nameid
-  // ------------ Token decode end ----------- //
+  const header = { headers: { Authorization: `Bearer ${authUser.token}` } };
+
+  const getUsersData = async () => {
+      const localuser: any = localStorage.getItem("user")
+      const pUser = JSON.parse(localuser)
+      axios.get(baseUrl + `Users/${pUser.username}`, header)
+          .then((response) => {
+              const data = response.data
+              setUsers(data);
+          })
+  };
+
+  useEffect(() => {
+    getUsersData();
+}, []);
+
 
   return (
     <div >
@@ -38,9 +57,13 @@ function Header(props: any) {
             </li>
           </ul>
         </div>
+        <div  >
+          <img  style={{width:"50px", height:"50px", borderRadius:"30px"}} src={users.photoUrl}  alt="image" />
+          </div>
         <div className="Logout dropdown">
+
           <button className="btn  dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Welcome {username[0].toUpperCase() + username.substring(1)}
+            Welcome    {users.userName}  
           </button>
           <ul className="dropdown-menu">
             <li><a className="dropdown-item" href="#" onClick={() => { navigate(`/Dashborad/EditUserProfile`) }}>Edit Profile</a></li>
@@ -48,13 +71,6 @@ function Header(props: any) {
           </ul>
         </div>
       </nav>
-      {/* <div className='row'>
-          <div className='col-2'>
-            <SideBar />
-          </div>
-          <div className='col-6'>
-          </div>
-        </div> */}
     </div>
 
   );
