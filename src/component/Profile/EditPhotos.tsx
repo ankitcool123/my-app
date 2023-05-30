@@ -6,6 +6,7 @@ import "./EditUserProfile.css";
 import Swal from 'sweetalert2';
 import { AiFillDelete } from 'react-icons/ai';
 import { userAtom } from '../../state/userAtom';
+import "./EditPhotos.css";
 
 
 const baseUrl: any = process.env.REACT_APP_BASE_URL;
@@ -27,11 +28,12 @@ function EditPhotos(props: any) {
     }
 
     const handleChange = async () => {
+        setLoading(true);
         const formData = new FormData()
         formData.append("file", photoUrl)
         axios.post(baseUrl + "Users/add-photo", formData, header).then((res) => {
             console.log(res);
-            window.location.reload();
+            setLoading(false);
         })
     };
 
@@ -56,6 +58,18 @@ function EditPhotos(props: any) {
 
 
     // ------------- user profile update notification start -----------//
+
+    function updateProfileNotification(e: any) {
+        Swal.fire({
+            title: "Profile updated successfully!",
+            timer: 4000,
+            position: 'top-end',  
+            width: "400px",
+          });
+    }
+
+
+
     function updateUsersProfile(id: number) {
         Swal.fire({
             title: 'Are you sure?',
@@ -74,23 +88,18 @@ function EditPhotos(props: any) {
                         const data = response.data
                         console.log(data);
                         setLoading(false);
+                        updateProfileNotification(id);
                     })
             }
         })
     };
 
-    // function HandleClick1(e: any) {
-    //     Swal.fire({
-    //         title: "Auto close alert!",
-    //         text: "I will close in 2 seconds.",
-    //         timer: 6000
-    //       });
-    // }
+   
 
     // ------------- user profile update notification end -----------//
 
     //------------- user profile delete notifiaation start ---------//
-
+  
     function deleteUsersProfile(id: number) {
         Swal.fire({
             title: 'Are you sure?',
@@ -123,11 +132,11 @@ function EditPhotos(props: any) {
                     {
                         users.photos != null && users.photos.map((item: any) => {
                             return (
-                                <div className='col-sm-4'>
-                                    <div className="card mb-4">
-                                        <div className="card" style={{ backgroundColor: "plum" }}>
+                                <div className='col-sm-4 '>
+                                    <div className="card mb-4 editP">
+                                        <div className="card editP" style={{ backgroundColor: "plum" }}>
                                             <a>
-                                                <img src={item.url} onClick={() => updateUsersProfile(item.id)} className="card-img-top" alt="image" />
+                                                <img src={item.url} onClick={() => updateUsersProfile(item.id)} className="card-img-top editP" alt="image" />
                                             </a>
                                             <div className="card-body">
                                                 <AiFillDelete onClick={() => deleteUsersProfile(item.id)} />

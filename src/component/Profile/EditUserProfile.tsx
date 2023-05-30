@@ -16,7 +16,7 @@ function EditUserProfile(props: any) {
 
     // ----------- user list start  -------- //
     const [authUser]: any = useRecoilState(authUserAtom);
-    const [users,setUsers] = useRecoilState(userAtom);
+    const [users, setUsers] = useRecoilState(userAtom);
 
     const header = { headers: { Authorization: `Bearer ${authUser.token}` } };
 
@@ -34,22 +34,23 @@ function EditUserProfile(props: any) {
         getUsersData();
     }, []);
 
-  
-        // ----------- user list End -------- //
-        return (
-            <div>
-                <Header />
-                <div className="con">
+
+    // ----------- user list End -------- //
+    return (
+        <div className="con">
+            <Header />
+            <div >
+                <div className="card edituser" >
                     <div className="container">
-                        <h1>Your profile </h1>
-                        <div className="row">
-                            <div className='col-sm-4'>
-                                <div className="card mb-4">
-                                    <div className="card" style={{ backgroundColor: "plum" }}>
+                        <h4>Your profile </h4>
+                        <div className="row ">
+                            <div className='col-sm-4 '>
+                                <div className="card mb-4 mainP">
+                                    <div className="card mainP" >
                                         <a >
-                                            <img src={users.photoUrl} className="card-img-top" alt="image" />
+                                            <img src={users.photoUrl} className="card-img-top mainP" alt="image" />
                                         </a>
-                                        <div className="card-body">
+                                        {/* <div className="card-body">
                                             <h5 className="card-title">
                                                 <span className="d-flex justify-content-center">
                                                     <FaUserAlt />
@@ -58,8 +59,16 @@ function EditUserProfile(props: any) {
                                                     {users.userName}
                                                 </span>
                                             </h5>
-                                        </div>
+                                        </div> */}
                                     </div>
+                                </div>
+                                <div>
+                                    <span className="d-flex justify-content-center">
+                                        <FaUserAlt color='pink' size={30}/> <h5> {users.userName}</h5>
+                                    </span>
+                                    <span className="d-flex justify-content-center ">
+                                      
+                                    </span>
                                 </div>
                             </div>
                             <div className="col-8">
@@ -101,9 +110,10 @@ function EditUserProfile(props: any) {
                         </div>
 
                     </div>
-
                 </div>
+
             </div>
-        );
-    }
+        </div>
+    );
+}
 export default EditUserProfile;

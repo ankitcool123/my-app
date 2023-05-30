@@ -1,34 +1,119 @@
-.signIn {
-   background-color: whitesmoke;
-   margin-top: 15%
-}
+.login1{
+   height: 65vh;
+   width: 65%;
+   background-color: pink;
+   border-top-left-radius: 250px;
+   border-bottom-right-radius: 250px;
+   margin-top: 80px;
+   margin-left: 80px;
 
-.Reg {
-   color: blue;
-   cursor: pointer;
 }
-
-.log {
-   color: blue;
+.wel{
+   width: 25%;
+   height: 70%;
+   margin-top: 5%;
+   border-radius: 10px;
+ 
 }
-.Login{
-   margin-top: 50px;
+.hea{
+   margin-top: 30px;
+   color: aliceblue;
 }
-.inpas{
-   border-radius: 5px;
-   background: transparent;
-   margin-left: 10px;
+.heart{
+   margin-top: 30px;
+}
+.Reg{
+   margin-top: 30px;
+}
+.Log{
+   margin-top: 30px;
 }
 .img {
-   background-image: url(../Images/online-dating-vector1.png.jpg);
+   background-image: url(../Images/newPage1.png.PNG);
     height: 100vh;
     width: 100%;
     display: block;
 }
-.arrow{
-   margin-top: 20px;
-   margin-left: -20px;
-   color: aliceblue;
-   size: 20px;
-   cursor: pointer;
+.happy{
+   background-image: url(../Images/OIP1.png.jpg);
 }
+.newone4{
+   background-image: url(../Images/pexels-chloe-1043473.jpg);
+   height: 42%;
+   width: 40%;
+   background-size: cover;
+   background-repeat: no-repeat;
+   border-top-left-radius: 85px;
+   border-bottom-right-radius: 85px;
+   margin-top: 10px;
+   margin-left: -60px;
+   position: absolute;
+
+}
+.newone1{
+   background-image: url(../Images/pexels-chloe-1043474.jpg);
+   height: 35%;
+   width: 30%;
+   background-size: cover;
+   background-repeat: no-repeat;
+   border-top-right-radius: 70px;
+   border-bottom-left-radius: 70px;
+   margin-bottom: 20px;
+   margin-left: -30px;
+   bottom: 1%;
+   position: absolute;
+
+}
+.newone2{
+   background-image: url(../Images/pexels-tuấn-kiệt-jr-1391499.jpg);
+   height: 55%;
+   width: 50%;
+   background-size: cover;
+   background-repeat: no-repeat;
+   border-top-right-radius: 100px;
+   border-bottom-left-radius: 100px;
+   margin-top: -40px;
+   margin-left: 80px;
+   position: absolute;
+}
+.newone3{
+   background-image: url(../Images/pexels-tuấn-kiệt-jr-1372137.jpg);
+   height: 40%;
+   width: 35%;
+   background-size: cover;
+   background-repeat: no-repeat;
+   border-top-right-radius: 80px;
+   border-bottom-left-radius: 80px;
+   margin-left: 150px;
+   bottom: 4%;
+   position: absolute;
+}
+.log1{
+   margin-top: 25%;
+}
+.input1{
+   border-bottom: 1;
+   border-top: 0;
+   border-left: 0;
+   border-right: 0;
+   outline: none;
+   width: 60%;
+   margin-top: 40px;
+   height: 40px;
+
+}
+.input2{
+   border-bottom: 1;
+   border-top: 0;
+   border-left: 0;
+   border-right: 0;
+   outline: none;
+   width: 60%;
+   margin-top: 40px;
+   height: 40px;
+}
+.btn1{
+   width: 20%;
+   margin-top: 40px;
+   }
+

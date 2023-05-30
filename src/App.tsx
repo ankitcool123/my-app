@@ -20,14 +20,14 @@ function App() {
     <BrowserRouter>
     <RecoilRoot>
       <Routes>
-      <Route path="/" element={<Welcome />}></Route>
-        <Route path="/Login" element={<Login setSignIn={setSignIn} />}></Route>
+        <Route path="/" element={<Login setSignIn={setSignIn} />}></Route>
         <Route path="/Register" element={<SignUp />}></Route>
         <Route path="/Dashborad" element={<Protected Component={Header} />}></Route>
         <Route path="/Dashborad/Contact" element={<Protected Component={Contact} />}></Route>
         <Route path="/Dashborad/Chat" element={<Protected Component={Chat} />}></Route>
         <Route path="/Dashborad/Status" element={<Protected Component={Status} />}></Route>
         <Route path="/Dashborad/EditUserProfile" element={<Protected Component={EditUserProfile} />}></Route>
+        
       </Routes>
       </RecoilRoot>
     </BrowserRouter>

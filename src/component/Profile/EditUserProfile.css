@@ -1,4 +1,17 @@
-.con{
-    height: 100%;
-    background-color: whitesmoke; 
+.con {
+    height: 100vh;
+    background-color: silver;
+}
+
+.mainP {
+    border-top-right-radius: 180px;
+    border-bottom-left-radius: 180px;
+    height: 55vh;
+}
+
+.edituser {
+    height: 70vh;
+    width: 80%;
+    margin-left: 160px;
+    margin-top: 85px;
 }
