@@ -8,6 +8,8 @@ import { authUserAtom } from '../../state';
 const baseUrl: any = process.env.REACT_APP_BASE_URL;
 
 function Login(this: any, props: any) {
+
+    //----------- user login api start ------------//
     let navigate = useNavigate();
     const [userName, setUserName] = useState("");
     const [password, setPassword] = useState("");
@@ -20,9 +22,10 @@ function Login(this: any, props: any) {
             .then(function (response) {
                 setAuthUser(response.data);
                 props.setSignIn(true);
-                navigate("/Dashborad");
+                navigate("/Dashborad/Chat");
             })
     }
+    //----------- user login api end ------------//
 
     return (
         <div className=' d-flex justify-content-center img'>

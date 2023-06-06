@@ -1,7 +1,20 @@
-
-    
-
-
-.list{
-    margin-left: 20px;
+.con1{
+  background-color: whitesmoke;
+  width: 87%;
+  height: 85vh;
+  border-radius: 10px;
+  margin-top: 100px;
+}
+.prenxt{
+  float: right;
+  margin-right: 20px;
+}
+.borderPagina{
+    border: 1px solid;
+}
+.mainCard{
+   margin-top: 20px;
+}
+.userIcon{
+     margin-right: 10px;
 }

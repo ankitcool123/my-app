@@ -1,7 +1,7 @@
 .Logout{
     margin-right: 30px;
     cursor: pointer;
-    color: blue;
+    /* color: blue; */
  }
  *{
     margin: 0;
@@ -15,10 +15,12 @@
  } */
 
  .sidebar{
-    background: silver;
+    background: black;
     /* color: aliceblue; */
     height: 100vh;
-    /* width: 200px; */
+    position: sticky;
+    z-index: 56;
+    margin-top: 66px;
  }
 
 .top_section{
@@ -47,10 +49,16 @@
     transition: all 0.5s;
 }
 .active{
-    background: lightskyblue;
-    color: #000;
+    /* background: lightskyblue; */
+    color: white;
 }
 .icon, .lonk_text{
     font-size: 20px;
     
+}
+.collapse1{
+    bottom: 5%;
+    position: fixed;
+    color: white;
+    margin-left: 15px;
 }

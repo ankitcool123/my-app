@@ -27,7 +27,6 @@ function App() {
         <Route path="/Dashborad/Chat" element={<Protected Component={Chat} />}></Route>
         <Route path="/Dashborad/Status" element={<Protected Component={Status} />}></Route>
         <Route path="/Dashborad/EditUserProfile" element={<Protected Component={EditUserProfile} />}></Route>
-        
       </Routes>
       </RecoilRoot>
     </BrowserRouter>

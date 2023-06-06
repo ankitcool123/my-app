@@ -63,9 +63,9 @@ function EditPhotos(props: any) {
         Swal.fire({
             title: "Profile updated successfully!",
             timer: 4000,
-            position: 'top-end',  
+            position: 'top-end',
             width: "400px",
-          });
+        });
     }
 
 
@@ -94,12 +94,12 @@ function EditPhotos(props: any) {
         })
     };
 
-   
+
 
     // ------------- user profile update notification end -----------//
 
     //------------- user profile delete notifiaation start ---------//
-  
+
     function deleteUsersProfile(id: number) {
         Swal.fire({
             title: 'Are you sure?',
@@ -138,7 +138,7 @@ function EditPhotos(props: any) {
                                             <a>
                                                 <img src={item.url} onClick={() => updateUsersProfile(item.id)} className="card-img-top editP" alt="image" />
                                             </a>
-                                            <div className="card-body">
+                                            <div className="card-body deletePhoto">
                                                 <AiFillDelete onClick={() => deleteUsersProfile(item.id)} />
                                             </div>
                                         </div>
