@@ -5,7 +5,6 @@ import { useRecoilState } from 'recoil';
 import { authUserAtom } from '../../state';
 import axios from 'axios';
 import { userAtom } from '../../state/userAtom';
-import SideBar from './SideBar';
 
 const baseUrl: any = process.env.REACT_APP_BASE_URL;
 

@@ -6,12 +6,17 @@ import { FaUserAlt } from "react-icons/fa";
 import SideBar from '../nav/SideBar';
 import { IoIosArrowBack } from "react-icons/io";
 import { IoIosArrowForward } from "react-icons/io";
+import { AiFillHeart } from "react-icons/ai"
+import { AiTwotoneMessage } from "react-icons/ai"
+
 import myImages from "../Images/default (1).jpg";
+import { useNavigate } from 'react-router-dom';
 
 const baseUrl: any = process.env.REACT_APP_BASE_URL;
 
 
 function Contact(props: any) {
+    let navigate = useNavigate();
 
     // ----------- pagination state start  -------- //
     const [pageNumber, setPageNumber] = useState(1);
@@ -41,10 +46,25 @@ function Contact(props: any) {
     }, [pageNumber, pageSize]);
     // ----------- user list End -------- //
 
+
+    // ---------- user hover funcationality start -------- //
+    const [isHovered, setIsHovered] = useState(false);
+
+    const handleHover = () => {
+        setIsHovered(true);
+    };
+
+    const handleMouseLeave = () => {
+        setIsHovered(false);
+    };
+    // ---------- user hover funcationality end -------- //
+
+   
+
     return (
         <div>
             <Header />
-            <div className="row">
+            <div className="row contactBg" >
                 <div className="col-1">
                     <SideBar />
                 </div>
@@ -54,8 +74,21 @@ function Contact(props: any) {
                             {users.map((user: any) => (
                                 <div className='col-sm-2' >
                                     <div className="card mb-4">
-                                        <div className="card">
-                                            <img src={user.photoUrl ? user.photoUrl : myImages} className="card-img-top" alt="image" height={200} />
+                                        <div >
+                                            <div className="card-content" onMouseEnter={handleHover}
+                                                onMouseLeave={handleMouseLeave}>
+                                                <img src={user.photoUrl ? user.photoUrl : myImages} className="card-img-top" alt="image" height={200}  />
+                                                {isHovered && (
+                                                    <div className="card-icons">
+                                                       <FaUserAlt color="red" size={33} cursor="pointer" onClick={() => { navigate(`/Dashborad/Contact/UserChat?${user.userName}`,{state: {user}
+                                                        })}
+                                                        }/>
+                                                       <AiFillHeart color="red" cursor="pointer" size={44}/>
+                                                        <AiTwotoneMessage color="red" cursor="pointer" size={40}/>
+                                                    </div>
+                                                )}
+                                            </div>
+
                                             <div className="card-body">
                                                 <h5 className="card-title">
                                                     <span className="userIcon">
@@ -64,6 +97,9 @@ function Contact(props: any) {
                                                     <span className="d-inline-block text-truncate" style={{ maxWidth: "70px" }}>
                                                         {user.userName}
                                                     </span>
+                                                </h5>
+                                                <h5>
+                                                    age {user.age}, {user.country ? user.country : "Bhopal"}
                                                 </h5>
                                             </div>
                                         </div>
@@ -74,11 +110,11 @@ function Contact(props: any) {
                         </div>
                     </div>
 
-                    <div className="borderPagina"></div>
+                    <div className="borderPagina3"></div>
 
                     <div className="mt-4 ">
                         <div style={{ marginTop: "20px" }}>
-                            SHOWING CURRENT PAGE {pageNumber} OF {totalPages}   TOTAL USERS {totalItems}
+                            <b>   SHOWING CURRENT PAGE {pageNumber} OF {totalPages}   TOTAL USERS {totalItems}</b>
                         </div>
                         <div style={{ marginTop: "-20px" }}>
                             <button type="button" className="btn btn-secondary prenxt" onClick={() => setPageNumber(pageNumber + 1)} disabled={pageNumber === totalPages}>NEXT<IoIosArrowForward /></button>

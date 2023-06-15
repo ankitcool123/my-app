@@ -9,14 +9,23 @@ function SignUp(props: any) {
     let navigate = useNavigate();
     const [userName, setUserName] = useState("");
     const [password, setPassword] = useState("");
+    const [dateOfBirth, setDateOfBirth] = useState("");
     const [emailId, setEmailId] = useState("");
     const [PhoneNumber, setPhoneNumber] = useState("");
+    const [error, setError] = useState('');
+
 
     const header = { headers: { "Access-Control-Allow-Origin": "*" } };
     const handleSubmit = async (e: any) => {
-        let parm = { userName: userName, password: password, emailId: emailId, PhoneNumber: PhoneNumber };
+        let parm = { userName: userName, password: password, emailId: emailId, PhoneNumber: PhoneNumber, dateOfBirth: dateOfBirth };
         axios
-            .post(baseUrl + "Account/register", parm)
+            .post(baseUrl + "Account/register", parm).then(function (response) {
+
+            }).catch((error) => {
+                if (error.response && error.response.status === 400) {
+                    setError(" ");
+                }
+            });
     };
 
     return (
@@ -46,7 +55,13 @@ function SignUp(props: any) {
                                     <input type='input' className="input1" placeholder="Enter your name" onChange={(e) => setUserName(e.target.value)} />
                                 </div>
                                 <div className="d-flex justify-content-center">
+                                    {error && <div className="error user-name">user name already exist.</div>}
+                                </div>
+                                <div className="d-flex justify-content-center">
                                     <input type='password' className="input2" placeholder="Enter your password" onChange={(e) => setPassword(e.target.value)} />
+                                </div>
+                                <div className="d-flex justify-content-center">
+                                    <input type='date' className="input2" id="dateInput" name="dateInput" pattern="\d{4}-\d{2}-\d{2}" placeholder="Enter your date of birth" onChange={(e) => setDateOfBirth(e.target.value)} />
                                 </div>
                                 <div className="d-flex justify-content-center">
                                     <input type='email' className="input2" placeholder="Enter your @Email" onChange={(e) => setEmailId(e.target.value)} />

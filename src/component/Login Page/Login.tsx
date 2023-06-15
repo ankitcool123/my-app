@@ -13,6 +13,7 @@ function Login(this: any, props: any) {
     let navigate = useNavigate();
     const [userName, setUserName] = useState("");
     const [password, setPassword] = useState("");
+    const [error, setError] = useState('');
     const setAuthUser = useSetRecoilState(authUserAtom)
 
     const handleSubmit = async () => {
@@ -22,8 +23,12 @@ function Login(this: any, props: any) {
             .then(function (response) {
                 setAuthUser(response.data);
                 props.setSignIn(true);
-                navigate("/Dashborad/Chat");
-            })
+                navigate("/Dashborad/Contact");
+            }).catch((error) => {
+                if (error.response && error.response.status === 401) {
+                    setError(" ");
+                }
+            });
     }
     //----------- user login api end ------------//
 
@@ -47,13 +52,18 @@ function Login(this: any, props: any) {
                     </div>
                     <div className="col-5">
                         <div className="d-flex justify-content-center">
-                            <div className="container log1">
+                            <div className="container log2">
                                 <h2 className="d-flex justify-content-center">LOGIN</h2>
                                 <div className="d-flex justify-content-center">
                                     <input type='input' className="input1" placeholder="Enter your name" onChange={(e) => setUserName(e.target.value)} />
                                 </div>
                                 <div className="d-flex justify-content-center">
+                                </div>
+                                <div className="d-flex justify-content-center">
                                     <input type='password' className="input2" placeholder="Enter your password" onChange={(e) => setPassword(e.target.value)} />
+                                </div>
+                                <div className="d-flex justify-content-center">
+                                    {error && <div className="error user-name">Invalid username or password.</div>}
                                 </div>
                                 <div className="d-flex justify-content-center">
                                     <button type="button" className="btn1 btn btn-danger" onClick={handleSubmit}>Login</button>

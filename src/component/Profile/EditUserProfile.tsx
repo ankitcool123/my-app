@@ -59,7 +59,7 @@ function EditUserProfile(props: any) {
                                     </div>
                                     <div>
                                         <span className="d-flex justify-content-center">
-                                            <FaUserAlt color='pink' size={30} /> <h5> {users.userName}</h5>
+                                            <FaUserAlt  size={30} /> <h5> {users.userName}</h5>
                                         </span>
                                         <span className="d-flex justify-content-center ">
 

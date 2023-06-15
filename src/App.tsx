@@ -11,6 +11,7 @@ import Status from './component/Pages/Status';
 import Welcome from './component/Welcome Page/Welcome';
 import EditUserProfile from './component/Profile/EditUserProfile';
 import { RecoilRoot } from 'recoil';
+import UserChat from './component/UserChats/UserChat';
 
 
 function App() {
@@ -27,6 +28,7 @@ function App() {
         <Route path="/Dashborad/Chat" element={<Protected Component={Chat} />}></Route>
         <Route path="/Dashborad/Status" element={<Protected Component={Status} />}></Route>
         <Route path="/Dashborad/EditUserProfile" element={<Protected Component={EditUserProfile} />}></Route>
+        <Route path="/Dashborad/Contact/UserChat" element={<Protected Component={UserChat} />}></Route>
       </Routes>
       </RecoilRoot>
     </BrowserRouter>

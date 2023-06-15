@@ -1,0 +1,36 @@
+.mainCard12{
+    position: fixed;
+    margin-top: 30px;
+    margin-left: 50px;
+    height: 82vh;
+    
+}
+.edituser1 {
+    height: 80vh;
+    width: 70%;
+    margin-left: 160px;
+    margin-top: 85px;
+    background-color: whitesmoke;
+}
+.picStyle{
+  margin-top: 20px;
+  height: 75vh ;
+}
+.pivStyle1{
+  height: 40vh;
+}
+.picStyle2{
+  width: 100%;
+}
+.marginL{
+  margin-left: 15px;
+  margin-top: 14px;
+}
+.borderPagina{
+  border: 1px solid;
+  margin-top: 40px;
+}
+.buttonMargin{
+  margin-left: 55px;
+  margin-top: 10px;
+}
