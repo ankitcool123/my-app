@@ -47,7 +47,7 @@ function Contact(props: any) {
     // ----------- user list End -------- //
 
 
-    // ---------- user hover funcationality start -------- //
+    // ---------- user hover functionality start -------- //
     const [isHovered, setIsHovered] = useState(false);
 
     const handleHover = () => {
@@ -57,7 +57,7 @@ function Contact(props: any) {
     const handleMouseLeave = () => {
         setIsHovered(false);
     };
-    // ---------- user hover funcationality end -------- //
+    // ---------- user hover functionality end -------- //
 
    
 
