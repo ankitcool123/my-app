@@ -11,6 +11,8 @@ import { AiTwotoneMessage } from "react-icons/ai"
 
 import myImages from "../Images/default (1).jpg";
 import { useNavigate } from 'react-router-dom';
+import { useRecoilState } from 'recoil';
+import { authUserAtom } from '../../state';
 
 const baseUrl: any = process.env.REACT_APP_BASE_URL;
 
@@ -28,11 +30,12 @@ function Contact(props: any) {
     // ----------- user list start  -------- //
     const [users, setUsers] = useState([]);
 
-    const header = { headers: { pageNumber: pageNumber, pageSize: pageSize } };
+    const [authUser]: any = useRecoilState(authUserAtom);
+    const auth = { headers: { Authorization: `Bearer ${authUser.token}`} };
 
     const getUsersData = async () => {
         axios
-            .get(baseUrl + `Users?pageNumber=${pageNumber}&pageSize=${pageSize}`, header)
+            .get(baseUrl + `Users?pageNumber=${pageNumber}&pageSize=${pageSize}`, auth)
             .then(function (response) {
                 const data = response.data
                 setUsers(data.users);
@@ -45,6 +48,18 @@ function Contact(props: any) {
         getUsersData();
     }, [pageNumber, pageSize]);
     // ----------- user list End -------- //
+   
+    
+     // ----------- user Like Start -------- //
+
+                const liked = async (userName: string) => {
+                       await axios.post(baseUrl + `Likes/${userName}`,{},auth)
+                    .then((response) => {
+                       getUsersData();
+                     })
+            }
+  
+    // ----------- user Like End -------- //
 
 
     // ---------- user hover functionality start -------- //
@@ -71,7 +86,7 @@ function Contact(props: any) {
                 <div className="con1 col-11" >
                     <div className="container">
                         <div className="row mainCard">
-                            {users.map((user: any) => (
+                            {users.map((user: any , index: any) => (
                                 <div className='col-sm-2' >
                                     <div className="card mb-4">
                                         <div >
@@ -83,11 +98,12 @@ function Contact(props: any) {
                                                        <FaUserAlt color="red" size={33} cursor="pointer" onClick={() => { navigate(`/Dashborad/Contact/UserChat?${user.userName}`,{state: {user}
                                                         })}
                                                         }/>
-                                                       <AiFillHeart color="red" cursor="pointer" size={44}/>
+                                                       <AiFillHeart color={user.isLiked ? "red" : "white" } cursor="pointer" size={44} onClick={() => liked(user.userName)}/>
                                                         <AiTwotoneMessage color="red" cursor="pointer" size={40}/>
                                                     </div>
                                                 )}
                                             </div>
+
 
                                             <div className="card-body">
                                                 <h5 className="card-title">
@@ -112,7 +128,7 @@ function Contact(props: any) {
 
                     <div className="borderPagina3"></div>
 
-                    <div className="mt-4 ">
+                    <div className="mt-4">
                         <div style={{ marginTop: "20px" }}>
                             <b>   SHOWING CURRENT PAGE {pageNumber} OF {totalPages}   TOTAL USERS {totalItems}</b>
                         </div>

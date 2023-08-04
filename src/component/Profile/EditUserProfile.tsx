@@ -28,7 +28,7 @@ function EditUserProfile(props: any) {
             .then((response) => {
                 const data = response.data
                 setUsers(data);
-            })
+            }) 
     };
 
     useEffect(() => {

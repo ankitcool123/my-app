@@ -1,0 +1,17 @@
+.card-list {
+    display: flex;
+    overflow-x: auto; 
+    padding: 10px;
+    /* flex-direction: column; */
+  }
+  
+  .card {
+  
+    border: 1px solid #ccc;
+  }
+.bac{
+    background-color: silver;
+}
+.mainC{
+    margin-top: 10px;
+}

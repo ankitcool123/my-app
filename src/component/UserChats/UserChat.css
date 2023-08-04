@@ -7,7 +7,7 @@
 }
 .edituser1 {
     height: 80vh;
-    width: 70%;
+    width: 90%;
     margin-left: 160px;
     margin-top: 85px;
     background-color: whitesmoke;
@@ -15,12 +15,14 @@
 .picStyle{
   margin-top: 20px;
   height: 75vh ;
+  width: 80%;
 }
 .pivStyle1{
-  height: 40vh;
+  height: 35vh;
 }
 .picStyle2{
   width: 100%;
+  border-radius: 0%;
 }
 .marginL{
   margin-left: 15px;
@@ -33,4 +35,9 @@
 .buttonMargin{
   margin-left: 55px;
   margin-top: 10px;
+}
+.picStyle12{
+  margin-top: 20px;
+  margin-left: -50px;
+  width: 70%;
 }

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import "./SignUp.css";
+import Swal from 'sweetalert2';
 
 const baseUrl: any = process.env.REACT_APP_BASE_URL;
 
@@ -16,10 +17,28 @@ function SignUp(props: any) {
 
 
     const header = { headers: { "Access-Control-Allow-Origin": "*" } };
+
+    // ---------- User Success Registration Toaster start ------------//
+
+    function updateProfileNotification(e: any) {
+        Swal.fire({
+            title: "You have Register successfully!",
+            timer: 4000,
+            // position: 'top-end',
+            width: "400px",
+        });
+    }
+
+    // ---------- User Success Registration Toaster end ------------//
+
+    // ---------- User Registration api start ------------//
+
     const handleSubmit = async (e: any) => {
         let parm = { userName: userName, password: password, emailId: emailId, PhoneNumber: PhoneNumber, dateOfBirth: dateOfBirth };
         axios
             .post(baseUrl + "Account/register", parm).then(function (response) {
+                updateProfileNotification(e);
+
 
             }).catch((error) => {
                 if (error.response && error.response.status === 400) {
@@ -27,6 +46,8 @@ function SignUp(props: any) {
                 }
             });
     };
+
+    // ---------- User Registration api end ------------//
 
     return (
         <div className=' d-flex justify-content-center img'>
@@ -77,17 +98,12 @@ function SignUp(props: any) {
                                         <span className="Reg" onClick={() => { navigate(`/`) }}>Login</span>
                                     </span>
                                 </div>
-
                             </div>
-
                         </div>
-
                     </div>
                 </div>
             </div>
-
         </div>
-
     );
 }
 
