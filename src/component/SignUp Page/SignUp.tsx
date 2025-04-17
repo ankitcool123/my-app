@@ -7,7 +7,7 @@ import Swal from 'sweetalert2';
 const baseUrl: any = process.env.REACT_APP_BASE_URL;
 
 function SignUp(props: any) {
-    let navigate = useNavigate();
+    const navigate = useNavigate();
     const [userName, setUserName] = useState("");
     const [password, setPassword] = useState("");
     const [dateOfBirth, setDateOfBirth] = useState("");
@@ -15,91 +15,110 @@ function SignUp(props: any) {
     const [PhoneNumber, setPhoneNumber] = useState("");
     const [error, setError] = useState('');
 
-
     const header = { headers: { "Access-Control-Allow-Origin": "*" } };
 
-    // ---------- User Success Registration Toaster start ------------//
-
-    function updateProfileNotification(e: any) {
+    const updateProfileNotification = (e: any) => {
         Swal.fire({
             title: "You have Register successfully!",
             timer: 4000,
-            // position: 'top-end',
-            width: "400px",
+            width: "90%",
+            // maxWidth: "400px",
         });
-    }
-
-    // ---------- User Success Registration Toaster end ------------//
-
-    // ---------- User Registration api start ------------//
+    };
 
     const handleSubmit = async (e: any) => {
-        let parm = { userName: userName, password: password, emailId: emailId, PhoneNumber: PhoneNumber, dateOfBirth: dateOfBirth };
-        axios
-            .post(baseUrl + "Account/register", parm).then(function (response) {
+        e.preventDefault();
+        let parm = {
+            userName: userName,
+            password: password,
+            emailId: emailId,
+            PhoneNumber: PhoneNumber,
+            dateOfBirth: dateOfBirth
+        };
+
+        axios.post(baseUrl + "Account/register", parm)
+            .then(function (response) {
                 updateProfileNotification(e);
-
-
-            }).catch((error) => {
+            })
+            .catch((error) => {
                 if (error.response && error.response.status === 400) {
-                    setError(" ");
+                    setError("Username already exists");
                 }
             });
     };
 
-    // ---------- User Registration api end ------------//
-
     return (
-        <div className=' d-flex justify-content-center img'>
-            <div className="card" style={{ width: "80%", height: "85vh", marginTop: "80px" }}>
-                <div className="row">
-                    <div className="col-7 ">
-                        <div className="card sign1 ">
-                            <div className="row">
-                                <div className='col-6'>
-                                    <div className="newone4"></div>
-                                    <div className="newone1"></div>
-                                </div>
-                                <div className='col-6'>
-                                    <div className="newone2"></div>
-                                    <div className="newone3"></div>
-                                </div>
-                            </div>
-                        </div>
+        <div className='signup-container'>
+            <div className="signup-card">
+                <div className="signup-content">
+                    <div className="signup-images">
+                        {/* <div className="image-grid">
+                            <div className="image-item image-1"></div>
+                            <div className="image-item image-2"></div>
+                            <div className="image-item image-3"></div>
+                            <div className="image-item image-4"></div>
+                        </div> */}
                     </div>
-                    <div className="col-5">
-                        <div className="d-flex justify-content-center">
-                            <div className="container log1">
-                                <h2 className="d-flex justify-content-center">REGISTER</h2>
-                                <h5 className="d-flex justify-content-center">Please enter details to register</h5>
-                                <div className="d-flex justify-content-center">
-                                    <input type='input' className="input1" placeholder="Enter your name" onChange={(e) => setUserName(e.target.value)} />
-                                </div>
-                                <div className="d-flex justify-content-center">
-                                    {error && <div className="error user-name">user name already exist.</div>}
-                                </div>
-                                <div className="d-flex justify-content-center">
-                                    <input type='password' className="input2" placeholder="Enter your password" onChange={(e) => setPassword(e.target.value)} />
-                                </div>
-                                <div className="d-flex justify-content-center">
-                                    <input type='date' className="input2" id="dateInput" name="dateInput" pattern="\d{4}-\d{2}-\d{2}" placeholder="Enter your date of birth" onChange={(e) => setDateOfBirth(e.target.value)} />
-                                </div>
-                                <div className="d-flex justify-content-center">
-                                    <input type='email' className="input2" placeholder="Enter your @Email" onChange={(e) => setEmailId(e.target.value)} />
-                                </div>
-                                <div className="d-flex justify-content-center">
-                                    <input type='number' className="input2" placeholder="Enter your phone number" onChange={(e) => setPhoneNumber(e.target.value)} />
-                                </div>
-                                <div className="d-flex justify-content-center">
-                                    <button type="button" className="btn1 btn btn-danger" onClick={handleSubmit}>Register</button>
-                                </div>
-                                <div className='mt-5 d-flex justify-content-center'>
-                                    <span > Already have an account?
-                                        <span className="Reg" onClick={() => { navigate(`/`) }}>Login</span>
-                                    </span>
-                                </div>
+                    <div className="signup-form">
+                        <form onSubmit={handleSubmit} className="form-container">
+                            <h2 className="signup-title">REGISTER</h2>
+                            <p className="signup-subtitle">Please enter details to register</p>
+
+                            <input
+                                type='text'
+                                className="signup-input"
+                                placeholder="Enter your name"
+                                onChange={(e) => setUserName(e.target.value)}
+                                required
+                            />
+
+                            {error && <div className="error-message">{error}</div>}
+
+                            <input
+                                type='password'
+                                className="signup-input"
+                                placeholder="Enter your password"
+                                onChange={(e) => setPassword(e.target.value)}
+                                required
+                            />
+
+                            <input
+                                type='date'
+                                className="signup-input"
+                                id="dateInput"
+                                name="dateInput"
+                                placeholder="Enter your date of birth"
+                                onChange={(e) => setDateOfBirth(e.target.value)}
+                                required
+                            />
+
+                            <input
+                                type='email'
+                                className="signup-input"
+                                placeholder="Enter your @Email"
+                                onChange={(e) => setEmailId(e.target.value)}
+                                required
+                            />
+
+                            <input
+                                type='tel'
+                                className="signup-input"
+                                placeholder="Enter your phone number"
+                                onChange={(e) => setPhoneNumber(e.target.value)}
+                                required
+                            />
+
+                            <button type="submit" className="signup-button">
+                                Register
+                            </button>
+
+                            <div className='login-link'>
+                                Already have an account?
+                                <span className="login-text" onClick={() => navigate(`/`)}>
+                                    Login
+                                </span>
                             </div>
-                        </div>
+                        </form>
                     </div>
                 </div>
             </div>

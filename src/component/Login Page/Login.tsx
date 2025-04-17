@@ -8,13 +8,11 @@ import { authUserAtom } from '../../state';
 const baseUrl: any = process.env.REACT_APP_BASE_URL;
 
 function Login(this: any, props: any) {
-
-    //----------- user login api start ------------//
-    let navigate = useNavigate();
+    const navigate = useNavigate();
     const [userName, setUserName] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState('');
-    const setAuthUser = useSetRecoilState(authUserAtom)
+    const setAuthUser = useSetRecoilState(authUserAtom);
 
     const handleSubmit = async () => {
         let parm = { userName: userName, password: password };
@@ -30,59 +28,53 @@ function Login(this: any, props: any) {
                 }
             });
     }
-    //----------- user login api end ------------//
 
     return (
-        <div className=' d-flex justify-content-center img'>
-            <div className="card" style={{ width: "80%", height: "85vh", marginTop: "80px" }}>
-                <div className="row">
-                    <div className="col-7 ">
-                        <div className="card login1" >
-                            <div className="row">
-                                <div className='col-6'>
-                                    <div className="newone4"></div>
-                                    <div className="newone1"></div>
-                                </div>
-                                <div className='col-6'>
-                                    <div className="newone2"></div>
-                                    <div className="newone3"></div>
-                                </div>
-                            </div>
-                        </div>
+        <div className='login-container'>
+            <div className="login-card">
+                <div className="login-content">
+                    <div className="login-images">
+                        {/* <div className="image-grid">
+                            <div className="image-item image-1"></div>
+                            <div className="image-item image-2"></div>
+                            <div className="image-item image-3"></div>
+                            <div className="image-item image-4"></div>
+                        </div> */}
                     </div>
-                    <div className="col-5">
-                        <div className="d-flex justify-content-center">
-                            <div className="container log2">
-                                <h2 className="d-flex justify-content-center">LOGIN</h2>
-                                <div className="d-flex justify-content-center">
-                                    <input type='input' className="input1" placeholder="Enter your name" onChange={(e) => setUserName(e.target.value)} />
-                                </div>
-                                <div className="d-flex justify-content-center">
-                                </div>
-                                <div className="d-flex justify-content-center">
-                                    <input type='password' className="input2" placeholder="Enter your password" onChange={(e) => setPassword(e.target.value)} />
-                                </div>
-                                <div className="d-flex justify-content-center">
-                                    {error && <div className="error user-name">Invalid username or password.</div>}
-                                </div>
-                                <div className="d-flex justify-content-center">
-                                    <button type="button" className="btn1 btn btn-danger" onClick={handleSubmit}>Login</button>
-                                </div>
-                                <div className='mt-5 d-flex justify-content-center'>
-                                    <span > Don't have an account?
-                                        <span className="Reg" onClick={() => { navigate(`/Register`) }}>Register</span>
-                                    </span>
-                                </div>
+                    <div className="login-form">
+                        <div className="form-container">
+                            <h2 className="login-title">LOGIN</h2>
+                            <input 
+                                type='text' 
+                                className="login-input" 
+                                placeholder="Enter your name" 
+                                onChange={(e) => setUserName(e.target.value)} 
+                            />
+                            <input 
+                                type='password' 
+                                className="login-input" 
+                                placeholder="Enter your password" 
+                                onChange={(e) => setPassword(e.target.value)} 
+                            />
+                            {error && <div className="error-message">Invalid username or password.</div>}
+                            <button 
+                                type="button" 
+                                className="login-button" 
+                                onClick={handleSubmit}
+                            >
+                                Login
+                            </button>
+                            <div className='register-link'>
+                                Don't have an account?
+                                <span className="register-text" onClick={() => { navigate(`/Register`) }}>
+                                    Register
+                                </span>
                             </div>
-
                         </div>
-
                     </div>
                 </div>
             </div>
-
         </div>
-
     );
 }
 
