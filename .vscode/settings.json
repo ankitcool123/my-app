@@ -1,0 +1,8 @@
+{
+    "appService.zipIgnorePattern": [
+        "node_modules{,/**}",
+        ".vscode{,/**}"
+    ],
+    "appService.defaultWebAppToDeploy": "/subscriptions/797d71bb-2436-472f-b026-47813b0b91b4/resourceGroups/rg-learn/providers/Microsoft.Web/sites/Datingwebapp",
+    "appService.deploySubpath": "."
+}

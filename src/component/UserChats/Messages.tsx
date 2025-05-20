@@ -104,7 +104,8 @@ const setMessages = useSetRecoilState(messagesAtom);
   
   
   const socket = useWebSocket(
-    `wss://localhost:5001/api/Messages/ws/${authUser.username}`,
+    // `wss://localhost:5001/api/Messages/ws/${authUser.username}`,
+     `wss://new-folder-w4wh.onrender.com/api/Messages/ws/${authUser.username}`,
     handleSocketMessage
   );
 
