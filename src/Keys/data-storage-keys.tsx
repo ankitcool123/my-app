@@ -4,5 +4,8 @@ export const DATA_STORAGE_KEYS = {
     },
     messages: {
         messagesAtom: "messagesAtom"
-    }
+    },
+    loader: {
+        loaderAtom: "loaderAtom"
+    },
 }

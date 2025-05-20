@@ -26,7 +26,7 @@ const Messages: React.FC<Props> = ({ data: recipientUsername }) => {
   // const [messages, setMessages] = useState<Message[]>([]);
   // const [messages, setMessages] = useRecoilState(messagesAtom);
   const messages = useRecoilValue(messagesAtom);
-const setMessages = useSetRecoilState(messagesAtom);
+  const setMessages = useSetRecoilState(messagesAtom);
   const [content, setContent] = useState("");
 
   const localUser: any = localStorage.getItem("user");
@@ -48,24 +48,24 @@ const setMessages = useSetRecoilState(messagesAtom);
         `${baseUrl}Messages/thread/${recipientUsername}`,
         authHeaders
       );
-  
+
       // Make sure they're in oldest -> newest order
-      const sorted = [...response.data].sort((a, b) =>
-        new Date(a.messageSent).getTime() - new Date(b.messageSent).getTime()
+      const sorted = [...response.data].sort(
+        (a, b) =>
+          new Date(a.messageSent).getTime() - new Date(b.messageSent).getTime()
       );
-  
+
       setMessages(sorted);
     } catch (error) {
       console.error("Error fetching messages:", error);
     }
   };
-  
 
   const handleSocketMessage = (event: MessageEvent) => {
     try {
       if (!event.data.startsWith("Server received: ")) {
         const message = JSON.parse(event.data);
-  
+
         // Enrich sender photo
         if (!message.senderPhotoUrl) {
           message.senderPhotoUrl =
@@ -73,7 +73,7 @@ const setMessages = useSetRecoilState(messagesAtom);
               ? authUser.photoUrl
               : "/default-user.png";
         }
-  
+
         // Check if already exists (simple way using timestamp + content)
         const exists = messages.some(
           (m) =>
@@ -81,14 +81,17 @@ const setMessages = useSetRecoilState(messagesAtom);
             m.senderUsername === message.senderUsername &&
             m.messageSent === message.messageSent
         );
-  
+
         if (!exists) {
           // setMessages((prev) => [...prev, message]);
           // var msg = new Message(){
           //   content : message.Content
           // }
-          let ms: Message ={ content : message.Content, messageSent : message.MessageSent, 
-            senderUsername : message.SenderUsername, senderPhotoUrl : message.senderPhotoUrl
+          let ms: Message = {
+            content: message.Content,
+            messageSent: message.MessageSent,
+            senderUsername: message.SenderUsername,
+            senderPhotoUrl: message.senderPhotoUrl,
           };
           setMessages((prev) => [...prev, ms]);
           console.log("📥 Appended new message via WebSocket:", ms);
@@ -100,12 +103,10 @@ const setMessages = useSetRecoilState(messagesAtom);
       console.warn("Non-JSON message:", event.data);
     }
   };
-  
-  
-  
+
   const socket = useWebSocket(
     // `wss://localhost:5001/api/Messages/ws/${authUser.username}`,
-     `wss://new-folder-w4wh.onrender.com/api/Messages/ws/${authUser.username}`,
+    `wss://new-folder-w4wh.onrender.com/api/Messages/ws/${authUser.username}`,
     handleSocketMessage
   );
 
@@ -131,7 +132,7 @@ const setMessages = useSetRecoilState(messagesAtom);
       senderPhotoUrl: authUser.photoUrl,
       content,
       tempId: Date.now(),
-      messageSent: undefined
+      messageSent: undefined,
     };
 
     //setMessages((prev) => [...(prev || []), optimisticMessage]);
@@ -150,7 +151,6 @@ const setMessages = useSetRecoilState(messagesAtom);
       console.warn("⚠️ WebSocket not connected!");
     }
   }, [socket]);
-  
 
   return (
     <div className="mainC">
@@ -168,43 +168,54 @@ const setMessages = useSetRecoilState(messagesAtom);
             }}
           >
             {Array.isArray(messages) &&
-            messages?.map((item, index) => {
-              const isSender = item.senderUsername === parsedUser.username;
-              return (
-                <div
-                  key={index}
-                  style={{
-                    display: "flex",
-                    justifyContent: isSender ? "flex-end" : "flex-start",
-                    marginBottom: "10px",
-                  }}
-                >
+              messages?.map((item, index) => {
+                const isSender = item.senderUsername === parsedUser.username;
+                return (
                   <div
+                    key={index}
                     style={{
-                      maxWidth: "60%",
-                      backgroundColor: isSender ? "#DCF8C6" : "#FFF",
-                      borderRadius: "15px",
-                      padding: "10px",
-                      boxShadow: "0 1px 3px rgba(0,0,0,0.1)",
                       display: "flex",
-                      alignItems: "center",
+                      justifyContent: isSender ? "flex-end" : "flex-start",
+                      marginBottom: "10px",
                     }}
                   >
-                    <img
-                      src={item.senderPhotoUrl}
-                      alt="user"
+                    <div
                       style={{
-                        width: "30px",
-                        height: "30px",
-                        borderRadius: "50%",
-                        marginRight: "10px",
+                        maxWidth: "60%",
+                        backgroundColor: isSender ? "#DCF8C6" : "#FFF",
+                        borderRadius: "15px",
+                        padding: "10px",
+                        boxShadow: "0 1px 3px rgba(0,0,0,0.1)",
+                        display: "flex",
+                        alignItems: "flex-end", // Aligns items to the bottom
+                        wordWrap: "break-word", // Ensure long words break
+                        flexWrap: "wrap", // Allow wrapping
                       }}
-                    />
-                    <div style={{ color: "black" }}>{item?.content}</div>
+                    >
+                      <img
+                        src={item.senderPhotoUrl}
+                        alt="user"
+                        style={{
+                          width: "30px",
+                          height: "30px",
+                          borderRadius: "50%",
+                          marginRight: "10px",
+                          flexShrink: 0, // Prevent image from shrinking
+                        }}
+                      />
+                      <div
+                        style={{
+                          color: "black",
+                          wordBreak: "break-word", // Ensure wrapping
+                          flex: 1, // Allow text to take available space
+                        }}
+                      >
+                        {item?.content}
+                      </div>
+                    </div>
                   </div>
-                </div>
-              );
-            })}
+                );
+              })}
             <div ref={messagesEndRef} />
           </div>
 

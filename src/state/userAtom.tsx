@@ -10,3 +10,7 @@ export const messagesAtom = atom<Message[]>({
     key: DATA_STORAGE_KEYS.users.usersAtom,
     default: [],
 });
+export const loaderAtom = atom({
+  key: DATA_STORAGE_KEYS.loader.loaderAtom,
+  default: false,
+});
