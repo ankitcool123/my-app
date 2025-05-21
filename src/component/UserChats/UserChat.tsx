@@ -22,17 +22,8 @@ function UserChat(props: any) {
 
   return (
     <div>
-      {isLoading && (
-        <div className="loader-overlay">
-          <div className="loader-spinner"></div>
-        </div>
-      )}
-      <Header />
       <div className="row">
         <div className="row contactBg">
-          {/* <div className="col-1">
-                        <SideBar />
-                    </div> */}
           <div className="col-10 mainCard12">
             <div className="card edituser1">
               <div className="container">

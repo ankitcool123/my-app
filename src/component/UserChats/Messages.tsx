@@ -7,6 +7,8 @@ import { authUserAtom } from "../../state";
 import useWebSocket from "./useWebSocket";
 import { messagesAtom } from "../../state/userAtom";
 import { Message } from "./Message";
+import "./Messages.css";
+
 const baseUrl: any = process.env.REACT_APP_BASE_URL;
 
 // interface Message {
@@ -154,88 +156,72 @@ const Messages: React.FC<Props> = ({ data: recipientUsername }) => {
 
   return (
     <div className="mainC">
-      <div className="container">
-        <div className="card">
-          <div
-            className="card-list"
-            style={{
-              backgroundColor: "whitesmoke",
-              height: "60vh",
-              overflowY: "auto",
-              padding: "10px",
-              display: "flex",
-              flexDirection: "column",
-            }}
-          >
-            {Array.isArray(messages) &&
-              messages?.map((item, index) => {
-                const isSender = item.senderUsername === parsedUser.username;
-                return (
+      <div className="chat-container">
+        <div className="card-list">
+          {Array.isArray(messages) &&
+            messages?.map((item, index) => {
+              const isSender = item.senderUsername === parsedUser.username;
+              return (
+                <div
+                  key={index}
+                  style={{
+                    display: "flex",
+                    justifyContent: isSender ? "flex-end" : "flex-start",
+                    marginBottom: "10px",
+                  }}
+                >
                   <div
-                    key={index}
                     style={{
+                      maxWidth: "60%",
+                      backgroundColor: isSender ? "#DCF8C6" : "#FFF",
+                      borderRadius: "15px",
+                      padding: "10px",
+                      boxShadow: "0 1px 3px rgba(0,0,0,0.1)",
                       display: "flex",
-                      justifyContent: isSender ? "flex-end" : "flex-start",
-                      marginBottom: "10px",
+                      alignItems: "flex-end",
+                      wordWrap: "break-word",
+                      flexWrap: "wrap",
                     }}
                   >
+                    <img
+                      src={item.senderPhotoUrl}
+                      alt="user"
+                      style={{
+                        width: "30px",
+                        height: "30px",
+                        borderRadius: "50%",
+                        marginRight: "10px",
+                        flexShrink: 0,
+                      }}
+                    />
                     <div
                       style={{
-                        maxWidth: "60%",
-                        backgroundColor: isSender ? "#DCF8C6" : "#FFF",
-                        borderRadius: "15px",
-                        padding: "10px",
-                        boxShadow: "0 1px 3px rgba(0,0,0,0.1)",
-                        display: "flex",
-                        alignItems: "flex-end", // Aligns items to the bottom
-                        wordWrap: "break-word", // Ensure long words break
-                        flexWrap: "wrap", // Allow wrapping
+                        color: "black",
+                        wordBreak: "break-word",
+                        flex: 1,
                       }}
                     >
-                      <img
-                        src={item.senderPhotoUrl}
-                        alt="user"
-                        style={{
-                          width: "30px",
-                          height: "30px",
-                          borderRadius: "50%",
-                          marginRight: "10px",
-                          flexShrink: 0, // Prevent image from shrinking
-                        }}
-                      />
-                      <div
-                        style={{
-                          color: "black",
-                          wordBreak: "break-word", // Ensure wrapping
-                          flex: 1, // Allow text to take available space
-                        }}
-                      >
-                        {item?.content}
-                      </div>
+                      {item?.content}
                     </div>
                   </div>
-                );
-              })}
-            <div ref={messagesEndRef} />
-          </div>
+                </div>
+              );
+            })}
+          <div ref={messagesEndRef} />
+        </div>
 
-          <div className="input-group mb-3">
-            <input
-              type="text"
-              onKeyDown={handleKeyPress}
-              value={content}
-              onChange={(e) => setContent(e.target.value)}
-              placeholder="Type your message..."
-              style={{ width: "90%" }}
-            />
-            <button
-              className="btn"
-              onClick={handleSubmit}
-              style={{ width: "10%", color: "black", borderColor: "black" }}
-            >
-              <IoMdSend />
-            </button>
-          </div>
+        <div className="chat-input-wrapper">
+          <input
+            type="text"
+            onKeyDown={handleKeyPress}
+            value={content}
+            onChange={(e) => setContent(e.target.value)}
+            placeholder="Type your message..."
+            className="chat-input"
+          />
+          <button className="send-button" type="submit" onClick={handleSubmit}>
+            <IoMdSend size={20} />
+          </button>
         </div>
       </div>
     </div>

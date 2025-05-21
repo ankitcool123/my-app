@@ -2,25 +2,21 @@ import React, { useEffect, useState } from "react";
 import Header from "../nav/Header";
 import "./Contacts.css";
 import axios from "axios";
-import { FaUserAlt } from "react-icons/fa";
-import SideBar from "../nav/SideBar";
-import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
-import { AiFillHeart, AiTwotoneMessage } from "react-icons/ai";
+import { AiFillHeart } from "react-icons/ai";
 import myImages from "../Images/default (1).jpg";
-import { useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import { authUserAtom } from "../../state";
-import { loaderAtom } from "../../state/userAtom";
+import { loaderAtom, selectedChatUserAtom } from "../../state/userAtom";
+import Messages from "../UserChats/Messages";
+import { FaUserCircle } from "react-icons/fa";
 
 const baseUrl: any = process.env.REACT_APP_BASE_URL;
 
 function Contact() {
-  const navigate = useNavigate();
+  const [users, setUsers] = useState<any[]>([]);
+  const [selectedUser, setSelectedUser] = useRecoilState(selectedChatUserAtom);
   const [pageNumber, setPageNumber] = useState(1);
-  const [pageSize, setPageSize] = useState(12);
-  const [totalItems, setTotalItems] = useState(0);
-  const [totalPages, setTotalPages] = useState(1);
-  const [users, setUsers] = useState([]);
+  const [pageSize] = useState(50);
   const [authUser]: any = useRecoilState(authUserAtom);
   const auth = { headers: { Authorization: `Bearer ${authUser.token}` } };
   const [isLoading] = useRecoilState(loaderAtom);
@@ -33,8 +29,9 @@ function Contact() {
       );
       const data = response.data;
       setUsers(data.users);
-      setTotalItems(data.pagination.totalItems);
-      setTotalPages(data.pagination.totalPages);
+      if (!selectedUser && data.users.length > 0) {
+        setSelectedUser(data.users[0]);
+      }
     } catch (error) {
       console.error("Error fetching users:", error);
     }
@@ -42,7 +39,7 @@ function Contact() {
 
   useEffect(() => {
     getUsersData();
-  }, [pageNumber, pageSize]);
+  }, [pageNumber]);
 
   const liked = async (userName: string) => {
     try {
@@ -61,69 +58,159 @@ function Contact() {
         </div>
       )}
       <Header />
-      <div className="main-content-container">
-        <div className="content-area">
-          <div className="contact-grid-container">
-            <div className="contact-grid">
-              {users.map((user: any) => (
-                <div className="contact-card" key={user.userName}>
-                  <div className="card-image-container">
-                    <img
-                      src={user.photoUrl || myImages}
-                      className="card-image"
-                      alt={user.userName}
-                    />
-                    <div className="card-hover-icons">
-                      <FaUserAlt
-                        onClick={() =>
-                          navigate(
-                            `/Dashborad/Contact/UserChat?${user.userName}`,
-                            { state: { user } }
-                          )
-                        }
-                      />
-                      <AiFillHeart
-                        color={user.isLiked ? "red" : "white"}
-                        onClick={() => liked(user.userName)}
-                      />
-                      <AiTwotoneMessage />
+      <div
+        className="main-content-container"
+        style={{ display: "flex", height: "calc(100vh - 60px)" }}
+      >
+        {/* Sidebar */}
+        <div
+          className="sidebar"
+          style={{
+            width: 280,
+            borderRight: "1px solid #ddd",
+            overflowY: "auto",
+            padding: "1rem",
+            height: "100%", // ensure full height
+          }}
+        >
+          <h3>Contacts</h3>
+          {users.map((user) => (
+            <div
+              key={user.userName}
+              className={`sidebar-user-item ${
+                selectedUser?.userName === user.userName ? "selected" : ""
+              }`}
+              onClick={() => setSelectedUser(user)}
+              style={{
+                display: "flex",
+                alignItems: "center",
+                marginBottom: 12,
+                padding: 8,
+                cursor: "pointer",
+                backgroundColor:
+                  selectedUser?.userName === user.userName
+                    ? "#e6f0ff"
+                    : "transparent",
+                borderRadius: 5,
+              }}
+            >
+              <img
+                src={user.photoUrl || myImages}
+                alt={user.userName}
+                style={{
+                  width: 40,
+                  height: 40,
+                  borderRadius: "50%",
+                  marginRight: 12,
+                }}
+              />
+              <div style={{ flex: 1 }}>
+                <div style={{ fontWeight: "bold" }}>
+                  {user.userName
+                    .split(" ")
+                    .map(
+                      (word: string) =>
+                        word.charAt(0).toUpperCase() + word.slice(1)
+                    )
+                    .join(" ")}
+                </div>
+                <div style={{ fontSize: 12, color: "#555" }}>
+                  Age {user.age}, {user.country || "Bhopal"}
+                </div>
+              </div>
+              <AiFillHeart
+                color={user.isLiked ? "red" : "gray"}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  liked(user.userName);
+                }}
+                style={{ cursor: "pointer" }}
+              />
+            </div>
+          ))}
+        </div>
+
+        {/* Chat window */}
+        <div
+          className="chat-window"
+          style={{
+            flex: 1,
+            padding: "1rem",
+            display: "flex",
+            flexDirection: "column",
+            height: "100%", // full height to parent
+          }}
+        >
+          {selectedUser ? (
+            <>
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  marginBottom: "1rem",
+                }}
+              >
+                {selectedUser.photoUrl ? (
+                  <img
+                    src={selectedUser.photoUrl}
+                    alt={selectedUser.userName}
+                    style={{
+                      width: 40,
+                      height: 40,
+                      borderRadius: "50%",
+                      marginRight: "10px",
+                      objectFit: "cover",
+                    }}
+                  />
+                ) : (
+                  <div>
+                    <div
+                    // style={{
+                    //   width: 40,
+                    //   height: 40,
+                    //   borderRadius: "50%",
+                    //   backgroundColor: "#ccc",
+                    //   display: "flex",
+                    //   alignItems: "center",
+                    //   justifyContent: "center",
+                    //   marginRight: "10px",
+                    // }}
+                    >
+                      <FaUserCircle size={24} color="#fff" />
                     </div>
                   </div>
-                  <div className="card-info">
-                    <h5 className="card-username">
-                      <FaUserAlt className="user-icon" />
-                      <span>{user.userName}</span>
-                    </h5>
-                    <p>
-                      Age {user.age}, {user.country || "Bhopal"}
-                    </p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
+                )}
+                <h2 style={{ margin: 0 }}>
+                  {selectedUser.userName
+                    .split(" ")
+                    .map(
+                      (word: string) =>
+                        word.charAt(0).toUpperCase() + word.slice(1)
+                    )
+                    .join(" ")}
+                </h2>
+              </div>
 
-          <div className="pagination-container">
-            <div className="pagination-info">
-              Page {pageNumber} of {totalPages} | {totalItems} users
-            </div>
-            <div className="pagination-buttons">
-              <button
-                onClick={() => setPageNumber(Math.max(1, pageNumber - 1))}
-                disabled={pageNumber === 1}
+              {/* Scrollable container for messages */}
+              <div
+                style={{
+                  // flex: 1,
+                  overflowY: "auto",
+                  border: "1px solid #ddd",
+                  borderRadius: 8,
+                  // padding: 12,
+                  backgroundColor: "white",
+                  scrollbarWidth: "none", // Firefox
+                  msOverflowStyle: "none", // IE 10+
+                }}
+                className="no-scrollbar"
               >
-                <IoIosArrowBack /> Previous
-              </button>
-              <button
-                onClick={() =>
-                  setPageNumber(Math.min(totalPages, pageNumber + 1))
-                }
-                disabled={pageNumber === totalPages}
-              >
-                Next <IoIosArrowForward />
-              </button>
-            </div>
-          </div>
+                <Messages data={selectedUser.userName} />
+              </div>
+            </>
+          ) : (
+            <div>Select a user to start chatting</div>
+          )}
         </div>
       </div>
     </div>
