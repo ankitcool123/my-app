@@ -63,48 +63,43 @@ const Messages: React.FC<Props> = ({ data: recipientUsername }) => {
     }
   };
 
-  const handleSocketMessage = (event: MessageEvent) => {
-    try {
-      if (!event.data.startsWith("Server received: ")) {
-        const message = JSON.parse(event.data);
+ const handleSocketMessage = (event: MessageEvent) => {
+  try {
+    if (!event.data.startsWith("Server received: ")) {
+      const rawMessage = JSON.parse(event.data);
 
-        // Enrich sender photo
-        if (!message.senderPhotoUrl) {
-          message.senderPhotoUrl =
-            message.senderUsername === authUser.username
-              ? authUser.photoUrl
-              : "/default-user.png";
-        }
+      const message: Message = {
+        content: rawMessage.Content,
+        messageSent: rawMessage.MessageSent,
+        senderUsername: rawMessage.SenderUsername,
+        senderPhotoUrl:
+          rawMessage.SenderPhotoUrl ||
+          (rawMessage.SenderUsername === authUser.username
+            ? authUser.photoUrl
+            : "/default-user.png"),
+      };
 
-        // Check if already exists (simple way using timestamp + content)
-        const exists = messages.some(
+      const exists =
+        Array.isArray(messages) &&
+        messages.some(
           (m) =>
             m.content === message.content &&
             m.senderUsername === message.senderUsername &&
             m.messageSent === message.messageSent
         );
 
-        if (!exists) {
-          // setMessages((prev) => [...prev, message]);
-          // var msg = new Message(){
-          //   content : message.Content
-          // }
-          let ms: Message = {
-            content: message.Content,
-            messageSent: message.MessageSent,
-            senderUsername: message.SenderUsername,
-            senderPhotoUrl: message.senderPhotoUrl,
-          };
-          setMessages((prev) => [...prev, ms]);
-          console.log("📥 Appended new message via WebSocket:", ms);
-        } else {
-          console.log("⚠️ Skipped duplicate message via WebSocket:", message);
-        }
+      if (!exists) {
+        setMessages((prev) => [...(prev || []), message]);
+        console.log("📥 Appended new message via WebSocket:", message);
+      } else {
+        console.log("⚠️ Skipped duplicate message via WebSocket:", message);
       }
-    } catch (error) {
-      console.warn("Non-JSON message:", event.data);
     }
-  };
+  } catch (error) {
+    console.warn("❌ Failed to parse WebSocket message:", event.data, error);
+  }
+};
+
 
   const socket = useWebSocket(
     // `wss://localhost:5001/api/Messages/ws/${authUser.username}`,
