@@ -23,21 +23,56 @@ function Contact() {
   const [showSidebar, setShowSidebar] = useState(true);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 
-  const getUsersData = async () => {
-    try {
-      const response = await axios.get(
-        `${baseUrl}Users?pageNumber=${pageNumber}&pageSize=${pageSize}`,
-        auth
-      );
-      const data = response.data;
-      setUsers(data.users);
-      if (!selectedUser && data.users.length > 0) {
-        setSelectedUser(data.users[0]);
-      }
-    } catch (error) {
-      console.error("Error fetching users:", error);
+ const getUsersData = async () => {
+  try {
+    const response = await axios.get(
+      `${baseUrl}Users?pageNumber=${pageNumber}&pageSize=${pageSize}`,
+      auth
+    );
+    let usersData = response.data.users;
+
+    // For each user, fetch last message timestamp
+    const usersWithLastMessage = await Promise.all(
+      usersData.map(async (user: any) => {
+        try {
+          const threadResponse = await axios.get(
+            `${baseUrl}Messages/thread/${user.userName}`,
+            auth
+          );
+          const messages = threadResponse.data;
+
+          // Find the latest messageSent timestamp in the thread
+          const lastMessageTime = messages.length
+            ? new Date(
+                messages.reduce((latest: any, msg: any) => 
+                  new Date(msg.messageSent) > new Date(latest.messageSent)
+                    ? msg
+                    : latest
+                , messages[0]).messageSent
+              ).getTime()
+            : 0;
+
+          return { ...user, lastMessageTime };
+        } catch (error) {
+          // If error fetching messages, just return user with lastMessageTime = 0
+          return { ...user, lastMessageTime: 0 };
+        }
+      })
+    );
+
+    // Sort users by lastMessageTime descending
+    usersWithLastMessage.sort((a, b) => b.lastMessageTime - a.lastMessageTime);
+
+    setUsers(usersWithLastMessage);
+
+    if (!selectedUser && usersWithLastMessage.length > 0) {
+      setSelectedUser(usersWithLastMessage[0]);
     }
-  };
+  } catch (error) {
+    console.error("Error fetching users or messages:", error);
+  }
+};
+
 
   useEffect(() => {
     getUsersData();
