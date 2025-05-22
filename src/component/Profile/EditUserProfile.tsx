@@ -36,16 +36,7 @@ function EditUserProfile(props: any) {
   // ----------- user list End -------- //
   return (
     <div className="con">
-      {isLoading && (
-        <div className="loader-overlay">
-          <div className="loader-spinner"></div>
-        </div>
-      )}
-      <Header />
       <div className="row">
-        {/* <div className="col-2">
-                    <SideBar />
-                </div> */}
         <div className="col-10 mainCard1">
           <div className="card edituser">
             <div className="container">

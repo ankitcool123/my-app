@@ -1,22 +1,64 @@
 .con {
-    height: 100vh;
-    background-color: silver;
+  min-height: 100vh;
+  background-color: silver;
+  padding: 1rem;
 }
 
 .mainP {
-    border-top-right-radius: 180px;
-    border-bottom-left-radius: 180px;
-    height: 55vh;
+  border-top-right-radius: 180px;
+  border-bottom-left-radius: 180px;
+  height: auto;
+  max-height: 300px;
+  object-fit: cover;
+  width: 100%;
 }
 
 .edituser {
-    height: 70vh;
-    width: 80%;
-    margin-left: 160px;
-    margin-top: 85px;
+  width: 100%;
+  max-width: 1200px;
+  margin: 85px auto 1rem auto;
+  padding: 1rem;
 }
-.mainCard1{
-    position: fixed;
-    margin-top: 30px;
-    margin-left: 50px;
+
+.mainCard1 {
+  margin-top: 30px;
+  padding: 0 1rem;
+}
+
+@media (max-width: 768px) {
+  .mainP {
+    max-height: 200px;
+  }
+
+  .edituser {
+    margin: 1rem auto;
+    width: 100%;
+  }
+
+  .mainCard1 {
+    margin-left: 0;
+  }
+
+  .card.mb-4 {
+    margin-bottom: 1rem !important;
+  }
+
+  .row {
+    flex-direction: column;
+  }
+
+  .col-sm-4,
+  .col-7 {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .d-flex {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .nav-tabs .nav-link {
+    font-size: 0.9rem;
+  }
 }
