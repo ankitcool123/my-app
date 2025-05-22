@@ -8,7 +8,7 @@ import { useRecoilState } from "recoil";
 import { authUserAtom } from "../../state";
 import { loaderAtom, selectedChatUserAtom } from "../../state/userAtom";
 import Messages from "../UserChats/Messages";
-import { FaUserCircle } from "react-icons/fa";
+import { FaUserCircle, FaBars } from "react-icons/fa";
 
 const baseUrl: any = process.env.REACT_APP_BASE_URL;
 
@@ -20,6 +20,8 @@ function Contact() {
   const [authUser]: any = useRecoilState(authUserAtom);
   const auth = { headers: { Authorization: `Bearer ${authUser.token}` } };
   const [isLoading] = useRecoilState(loaderAtom);
+  const [showSidebar, setShowSidebar] = useState(true);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 
   const getUsersData = async () => {
     try {
@@ -41,6 +43,16 @@ function Contact() {
     getUsersData();
   }, [pageNumber]);
 
+  useEffect(() => {
+    const handleResize = () => {
+      const mobile = window.innerWidth < 768;
+      setIsMobile(mobile);
+      if (!mobile) setShowSidebar(true);
+    };
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   const liked = async (userName: string) => {
     try {
       await axios.post(`${baseUrl}Likes/${userName}`, {}, auth);
@@ -50,6 +62,10 @@ function Contact() {
     }
   };
 
+  const toggleSidebar = () => {
+    setShowSidebar(!showSidebar);
+  };
+
   return (
     <div className="app-container">
       {isLoading && (
@@ -57,160 +73,110 @@ function Contact() {
           <div className="loader-spinner"></div>
         </div>
       )}
-      <Header />
-      <div
-        className="main-content-container"
-        style={{ display: "flex", height: "calc(100vh - 60px)" }}
-      >
-        {/* Sidebar */}
-        <div
-          className="sidebar"
-          style={{
-            width: 280,
-            borderRight: "1px solid #ddd",
-            overflowY: "auto",
-            padding: "1rem",
-            height: "100%", // ensure full height
-          }}
-        >
-          <h3>Contacts</h3>
-          {users.map((user) => (
-            <div
-              key={user.userName}
-              className={`sidebar-user-item ${
-                selectedUser?.userName === user.userName ? "selected" : ""
-              }`}
-              onClick={() => setSelectedUser(user)}
-              style={{
-                display: "flex",
-                alignItems: "center",
-                marginBottom: 12,
-                padding: 8,
-                cursor: "pointer",
-                backgroundColor:
-                  selectedUser?.userName === user.userName
-                    ? "#e6f0ff"
-                    : "transparent",
-                borderRadius: 5,
-              }}
-            >
-              <img
-                src={user.photoUrl || myImages}
-                alt={user.userName}
-                style={{
-                  width: 40,
-                  height: 40,
-                  borderRadius: "50%",
-                  marginRight: 12,
-                }}
-              />
-              <div style={{ flex: 1 }}>
-                <div style={{ fontWeight: "bold" }}>
-                  {user.userName
-                    .split(" ")
-                    .map(
-                      (word: string) =>
-                        word.charAt(0).toUpperCase() + word.slice(1)
-                    )
-                    .join(" ")}
-                </div>
-                <div style={{ fontSize: 12, color: "#555" }}>
-                  Age {user.age}, {user.country || "Bhopal"}
-                </div>
-              </div>
-              <AiFillHeart
-                color={user.isLiked ? "red" : "gray"}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  liked(user.userName);
-                }}
-                style={{ cursor: "pointer" }}
-              />
-            </div>
-          ))}
-        </div>
 
-        {/* Chat window */}
-        <div
-          className="chat-window"
-          style={{
-            flex: 1,
-            padding: "1rem",
-            display: "flex",
-            flexDirection: "column",
-            height: "100%", // full height to parent
-          }}
-        >
-          {selectedUser ? (
-            <>
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  marginBottom: "1rem",
-                }}
-              >
-                {selectedUser.photoUrl ? (
-                  <img
-                    src={selectedUser.photoUrl}
-                    alt={selectedUser.userName}
-                    style={{
-                      width: 40,
-                      height: 40,
-                      borderRadius: "50%",
-                      marginRight: "10px",
-                      objectFit: "cover",
-                    }}
-                  />
-                ) : (
-                  <div>
-                    <div
-                    // style={{
-                    //   width: 40,
-                    //   height: 40,
-                    //   borderRadius: "50%",
-                    //   backgroundColor: "#ccc",
-                    //   display: "flex",
-                    //   alignItems: "center",
-                    //   justifyContent: "center",
-                    //   marginRight: "10px",
-                    // }}
-                    >
-                      <FaUserCircle size={24} color="#fff" />
+      {/* Fixed header */}
+      <div className="fixed-header">
+        <Header />
+      </div>
+
+      {/* Mobile header */}
+      {isMobile && (
+        <div className="mobile-header">
+          <button className="sidebar-toggle" onClick={toggleSidebar}>
+            <FaBars />
+          </button>
+          <h3>{showSidebar ? "Contacts" : selectedUser?.userName || "Chat"}</h3>
+        </div>
+      )}
+
+      {/* Main layout */}
+      <div className="main-content-container">
+        <div className="chat-layout">
+          {/* Sidebar */}
+          <div className={`sidebar-container ${showSidebar ? "open" : ""}`}>
+            <div className="sidebar-header">Contacts</div>
+            <div className="sidebar-content">
+              {users.map((user) => (
+                <div
+                  key={user.userName}
+                  className={`sidebar-user-item ${
+                    selectedUser?.userName === user.userName ? "selected" : ""
+                  }`}
+                  onClick={() => {
+                    setSelectedUser(user);
+                    if (isMobile) setShowSidebar(false);
+                  }}
+                >
+                  <img src={user.photoUrl || myImages} alt={user.userName} />
+                  <div className="sidebar-user-info">
+                    <div className="sidebar-user-name">
+                      {user.userName
+                        .split(" ")
+                        .map(
+                          (word: string) =>
+                            word.charAt(0).toUpperCase() + word.slice(1)
+                        )
+                        .join(" ")}
+                    </div>
+                    <div className="sidebar-user-details">
+                      Age {user.age}, {user.country || "Bhopal"}
                     </div>
                   </div>
-                )}
-                <h2 style={{ margin: 0 }}>
-                  {selectedUser.userName
-                    .split(" ")
-                    .map(
-                      (word: string) =>
-                        word.charAt(0).toUpperCase() + word.slice(1)
-                    )
-                    .join(" ")}
-                </h2>
-              </div>
+                  <AiFillHeart
+                    color={user.isLiked ? "red" : "gray"}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      liked(user.userName);
+                    }}
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
 
-              {/* Scrollable container for messages */}
-              <div
-                style={{
-                  // flex: 1,
-                  overflowY: "auto",
-                  border: "1px solid #ddd",
-                  borderRadius: 8,
-                  // padding: 12,
-                  backgroundColor: "white",
-                  scrollbarWidth: "none", // Firefox
-                  msOverflowStyle: "none", // IE 10+
-                }}
-                className="no-scrollbar"
-              >
-                <Messages data={selectedUser.userName} />
+          {/* Chat Window */}
+          <div className="chat-window">
+            {selectedUser ? (
+              <>
+                <div className="chat-header">
+                  {selectedUser.photoUrl ? (
+                    <img
+                      src={selectedUser.photoUrl}
+                      alt={selectedUser.userName}
+                      className="chat-user-avatar"
+                    />
+                  ) : (
+                    <FaUserCircle size={36} className="chat-user-avatar" />
+                  )}
+                  <h2>
+                    {selectedUser.userName
+                      .split(" ")
+                      .map(
+                        (word: string) =>
+                          word.charAt(0).toUpperCase() + word.slice(1)
+                      )
+                      .join(" ")}
+                  </h2>
+                </div>
+
+                <div className="chat-messages-container">
+                  <Messages data={selectedUser.userName} />
+                </div>
+              </>
+            ) : (
+              <div className="no-user-selected">
+                <p>Select a user to start chatting</p>
+                {isMobile && (
+                  <button
+                    onClick={() => setShowSidebar(true)}
+                    className="show-contacts-btn"
+                  >
+                    Show Contacts
+                  </button>
+                )}
               </div>
-            </>
-          ) : (
-            <div>Select a user to start chatting</div>
-          )}
+            )}
+          </div>
         </div>
       </div>
     </div>
