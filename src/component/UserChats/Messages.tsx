@@ -63,42 +63,43 @@ const Messages: React.FC<Props> = ({ data: recipientUsername }) => {
     }
   };
 
- const handleSocketMessage = (event: MessageEvent) => {
+const handleSocketMessage = (event: MessageEvent) => {
   try {
     if (!event.data.startsWith("Server received: ")) {
-      const rawMessage = JSON.parse(event.data);
+      const parsed = JSON.parse(event.data);
 
-      const message: Message = {
-        content: rawMessage.Content,
-        messageSent: rawMessage.MessageSent,
-        senderUsername: rawMessage.SenderUsername,
-        senderPhotoUrl:
-          rawMessage.SenderPhotoUrl ||
-          (rawMessage.SenderUsername === authUser.username
-            ? authUser.photoUrl
-            : "/default-user.png"),
+      if (!parsed.Content || !parsed.SenderUsername || !parsed.MessageSent) {
+        console.warn("⚠️ Incomplete message data:", parsed);
+        return;
+      }
+
+      const ms: Message = {
+        content: parsed.Content,
+        messageSent: parsed.MessageSent,
+        senderUsername: parsed.SenderUsername,
+        senderPhotoUrl: parsed.SenderPhotoUrl || "/default-user.png",
       };
 
-      const exists =
-        Array.isArray(messages) &&
-        messages.some(
-          (m) =>
-            m.content === message.content &&
-            m.senderUsername === message.senderUsername &&
-            m.messageSent === message.messageSent
-        );
+      // Prevent duplicates
+      const alreadyExists = Array.isArray(messages) && messages.some(
+        (m) =>
+          m.content === ms.content &&
+          m.senderUsername === ms.senderUsername &&
+          m.messageSent === ms.messageSent
+      );
 
-      if (!exists) {
-        setMessages((prev) => [...(prev || []), message]);
-        console.log("📥 Appended new message via WebSocket:", message);
+      if (!alreadyExists) {
+        setMessages((current) => [...(Array.isArray(current) ? current : []), ms]);
+        console.log("📥 Appended new message via WebSocket:", ms);
       } else {
-        console.log("⚠️ Skipped duplicate message via WebSocket:", message);
+        console.log("⚠️ Skipped duplicate message via WebSocket:", ms);
       }
     }
-  } catch (error) {
-    console.warn("❌ Failed to parse WebSocket message:", event.data, error);
+  } catch (err) {
+    console.error("❌ Failed to parse WebSocket message:", event.data, err);
   }
 };
+
 
 
   const socket = useWebSocket(
