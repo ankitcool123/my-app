@@ -2,6 +2,9 @@
   min-height: 100vh;
   background-color: silver;
   padding: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start; /* Use 'center' for vertical centering if needed */
 }
 
 .mainP {
@@ -21,11 +24,18 @@
 }
 
 .mainCard1 {
-  margin-top: 30px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
   padding: 0 1rem;
 }
 
 @media (max-width: 768px) {
+  .con {
+    flex-direction: column;
+    align-items: center;
+  }
+
   .mainP {
     max-height: 200px;
   }
@@ -33,10 +43,12 @@
   .edituser {
     margin: 1rem auto;
     width: 100%;
+    max-width: 100%;
   }
 
   .mainCard1 {
     margin-left: 0;
+    justify-content: center;
   }
 
   .card.mb-4 {
