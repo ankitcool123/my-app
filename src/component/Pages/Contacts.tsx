@@ -6,7 +6,7 @@ import { AiFillHeart } from "react-icons/ai";
 import myImages from "../Images/default (1).jpg";
 import { useRecoilState } from "recoil";
 import { authUserAtom } from "../../state";
-import { loaderAtom, selectedChatUserAtom } from "../../state/userAtom";
+import { loaderAtom, selectedChatUserAtom, usersDataAtom } from "../../state/userAtom";
 import Messages from "../UserChats/Messages";
 import { FaUserCircle, FaBars } from "react-icons/fa";
 
@@ -19,19 +19,20 @@ function Contact() {
   const [pageSize] = useState(50);
   const [authUser]: any = useRecoilState(authUserAtom);
   const auth = { headers: { Authorization: `Bearer ${authUser.token}` } };
-  const [isLoading] = useRecoilState(loaderAtom);
   const [showSidebar, setShowSidebar] = useState(true);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+  const [isLoading, setIsLoading] = useRecoilState(loaderAtom);
+
 
  const getUsersData = async () => {
+  setIsLoading(true); // Show loader
   try {
     const response = await axios.get(
       `${baseUrl}Users?pageNumber=${pageNumber}&pageSize=${pageSize}`,
       auth
     );
     let usersData = response.data.users;
-
-    // For each user, fetch last message timestamp
+ // For each user, fetch last message timestamp
     const usersWithLastMessage = await Promise.all(
       usersData.map(async (user: any) => {
         try {
@@ -41,26 +42,26 @@ function Contact() {
           );
           const messages = threadResponse.data;
 
-          // Find the latest messageSent timestamp in the thread
+ // Find the latest messageSent timestamp in the thread
           const lastMessageTime = messages.length
             ? new Date(
-                messages.reduce((latest: any, msg: any) => 
-                  new Date(msg.messageSent) > new Date(latest.messageSent)
-                    ? msg
-                    : latest
-                , messages[0]).messageSent
+                messages.reduce(
+                  (latest: any, msg: any) =>
+                    new Date(msg.messageSent) > new Date(latest.messageSent)
+                      ? msg
+                      : latest,
+                  messages[0]
+                ).messageSent
               ).getTime()
             : 0;
 
           return { ...user, lastMessageTime };
         } catch (error) {
-          // If error fetching messages, just return user with lastMessageTime = 0
           return { ...user, lastMessageTime: 0 };
         }
       })
     );
 
-    // Sort users by lastMessageTime descending
     usersWithLastMessage.sort((a, b) => b.lastMessageTime - a.lastMessageTime);
 
     setUsers(usersWithLastMessage);
@@ -70,6 +71,8 @@ function Contact() {
     }
   } catch (error) {
     console.error("Error fetching users or messages:", error);
+  } finally {
+    setIsLoading(false); // Hide loader
   }
 };
 
@@ -97,9 +100,7 @@ function Contact() {
     }
   };
 
-  const toggleSidebar = () => {
-    setShowSidebar(!showSidebar);
-  };
+  const toggleSidebar = () => setShowSidebar(!showSidebar);
 
   return (
     <div className="app-container">
@@ -109,12 +110,10 @@ function Contact() {
         </div>
       )}
 
-      {/* Fixed header */}
       <div className="fixed-header">
         <Header />
       </div>
 
-      {/* Mobile header */}
       {isMobile && (
         <div className="mobile-header">
           <button className="sidebar-toggle" onClick={toggleSidebar}>
@@ -124,10 +123,8 @@ function Contact() {
         </div>
       )}
 
-      {/* Main layout */}
       <div className="main-content-container">
         <div className="chat-layout">
-          {/* Sidebar */}
           <div className={`sidebar-container ${showSidebar ? "open" : ""}`}>
             <div className="sidebar-header">Contacts</div>
             <div className="sidebar-content">
@@ -147,9 +144,8 @@ function Contact() {
                     <div className="sidebar-user-name">
                       {user.userName
                         .split(" ")
-                        .map(
-                          (word: string) =>
-                            word.charAt(0).toUpperCase() + word.slice(1)
+                        .map((word: string) =>
+                          word.charAt(0).toUpperCase() + word.slice(1)
                         )
                         .join(" ")}
                     </div>
@@ -169,7 +165,6 @@ function Contact() {
             </div>
           </div>
 
-          {/* Chat Window */}
           <div className="chat-window">
             {selectedUser ? (
               <>
@@ -186,9 +181,8 @@ function Contact() {
                   <h2>
                     {selectedUser.userName
                       .split(" ")
-                      .map(
-                        (word: string) =>
-                          word.charAt(0).toUpperCase() + word.slice(1)
+                      .map((word: string) =>
+                        word.charAt(0).toUpperCase() + word.slice(1)
                       )
                       .join(" ")}
                   </h2>

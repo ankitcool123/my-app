@@ -8,4 +8,10 @@ export const DATA_STORAGE_KEYS = {
     loader: {
         loaderAtom: "loaderAtom"
     },
+    usersData: {
+        usersDataAtom: "usersDataAtom"
+    },
+    selectedChatUsers: {
+        selectedChatUser : "selectedChatUser"
+    }
 }

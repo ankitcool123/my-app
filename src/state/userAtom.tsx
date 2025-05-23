@@ -15,6 +15,10 @@ export const loaderAtom = atom({
   default: false,
 });
 export const selectedChatUserAtom = atom<any | null>({
-  key: "selectedChatUser",
+  key: DATA_STORAGE_KEYS.selectedChatUsers.selectedChatUser,
   default: null,
+});
+export const usersDataAtom = atom({
+  key: DATA_STORAGE_KEYS.usersData.usersDataAtom,
+  default: [], 
 });

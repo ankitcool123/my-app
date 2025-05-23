@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation} from "react-router-dom";
 import "./Header.css";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { authUserAtom } from "../../state";
 import axios from "axios";
 import { loaderAtom, selectedChatUserAtom, userAtom } from "../../state/userAtom";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUserCircle } from "@fortawesome/free-solid-svg-icons";
 
 const baseUrl: any = process.env.REACT_APP_BASE_URL;
 
@@ -18,6 +16,7 @@ interface User {
 
 function Header() {
   const navigate = useNavigate();
+  const location = useLocation();
   const [isLoading, setIsLoading] = useRecoilState(loaderAtom);
   const [authUser]: any = useRecoilState(authUserAtom);
   const [users, setUsers] = useRecoilState(userAtom);
@@ -35,14 +34,23 @@ function Header() {
   };
 
   const handleNavigate = () => {
-    setIsLoading(true);
+  setIsLoading(true);
+
+  if (location.pathname === "/Dashborad/Contact") {
+    sessionStorage.setItem("showLoader", "true");
+
+    setTimeout(() => {
+      window.location.reload();
+    }, 100); 
+  } else {
     navigate("/Dashborad/Contact");
 
+    // Hide loader after a short delay (simulate loading time)
     setTimeout(() => {
       setIsLoading(false);
     }, 2000 + Math.random() * 2000);
-  };
-
+  }
+};
   const getUsersData = async () => {
     try {
       const localuser: any = localStorage.getItem("user");
